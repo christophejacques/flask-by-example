@@ -49,12 +49,13 @@ def login():
             return redirect(url_for("home"))
     
     print(f"Error : {error}")
-    return render_template("login.html", error=error)
+    return render_template("login.html", error=error, nberrors=session["tentatives"])
 
 @app.route("/logout", methods=["GET","POST"])
 def logout():
     session.pop("logged_in", None)
     print("logout()")
+    session["tentatives"] = 0
     return redirect(url_for("welcome"))
 
 @app.route("/<name>")
