@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <META Content-Type="text/html" charset="iso-8859-1">
+    </head>
+    <body>
+        <P style="text-align:right; margin:2px;">User : {{ username }}
+        <a href="/logout">Deconnexion</a></p>
+        Hello My World !<BR />
+        Phrase avec des accents<BR />
+        l'écureuil cogne à la fenêtre !<BR />
+        <BR />
+        <BR />
+        <font color="blue">
+        {% for message in get_flashed_messages() %}
+        {{ message }}
+        {% endfor %}
+        </font>
+    </body>
+</html>

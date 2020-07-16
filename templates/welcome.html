@@ -10,5 +10,12 @@
 <body>
     <P style="text-align:right;"><a href="/login">Se connecter</a></p>
     Bienvenu sur le serveur : MCJ <BR />
+    <BR />
+    <BR />
+    <font color="blue">
+    {% for message in get_flashed_messages() %}
+    {{ message }}
+    {% endfor %}
+    </font>
 </body>
 </html>
