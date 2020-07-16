@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+        p { 
+            margin: 2px; 
+        }
+    </style>
     <title>Flask Intro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
@@ -14,13 +19,17 @@
 
       <!-- errors -->
       {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        <BR />
+        <p class="error"><strong>Erreur : </strong> {{ error }}</p>
       {% endif %}
 
+      <BR />
       <!-- messages -->
-      {% for message in get_flashed_messages() %}
-        {{ message }}
-      {% endfor %}
+      <font color="blue">
+        {% for message in get_flashed_messages() %}
+          {{ message }}
+        {% endfor %}
+      </font>
     </div>
 
   </body>

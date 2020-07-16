@@ -80,7 +80,7 @@ def login():
         error = "Trop de tentatives invalides. Connexion désactivée"
         
     if error:
-        log(f"Error : {error}")
+        log(f"Erreur : {error}")
         
     return render_template("login.html", error=error)
 
@@ -89,9 +89,7 @@ def login():
 def logout():
     log()
     username = session.get("username", "")
-    session.pop("logged_in", None)
-    session.pop("username", None)
-    session.pop("tentatives", None)
+    session.clear()
     flash("Vous venez juste de vous déconnecter !")
     log(f"User : {username}, successfully disconnected")
     
@@ -100,8 +98,14 @@ def logout():
 @app.route("/<name>")
 def hello_name(name):
     log()
-    log(" : {name}")
-    return "Hello {} !".format(name)
+    log(f"looking for /{name}")
+    return "/{} is not accessible !".format(name)
+
+@app.route("/<name1>/<name2>")
+def hello_names(name1, name2):
+    log()
+    log(f"looking for /{name1}/{name2}")
+    return "/{}/{} is not accessible !".format(name1, name2)
 
 
 if __name__ == '__main__':
