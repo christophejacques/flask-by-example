@@ -1,24 +1,21 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash, g
-from functools import wraps
 import os, time, datetime
 import inspect, sqlite3
 
-# hashlib.sha256("test".encode("utf-8")).hexdigest()
-os.system("cls")
-app = Flask(__name__)
+from functools import wraps
+from models import app, BlogPost
 
 try:
-    app.config.from_object(os.environ['APP_SETTINGS'])
-except:
-    print("Erreur : Variable d'environnement *APP_SETTINGS* inconnue ! ")
+    from flask import render_template, request, url_for, redirect, session, flash
+    
+except Exception as e:
+    print("Error:", e)
     print()
+    print("L'environnement n'est pas à jour\n")
     print("Pour mettre à jour l'environnement,")
     print("tapper : source .env")
     exit(1)
-
-for k in app.config:
-    if k in ("ENV", "DEBUG", "TESTING", "SECRET_KEY", "DATABASE", "DEVELOPMENT"):
-        print("-", k, "=", app.config[k])
+    
+#os.system("cls")
 
 def log(*args, **kwargs):
     if args:
@@ -55,17 +52,16 @@ def login_required(f):
 @login_required
 def home():
     log()
-    g.db = connect_db()
-    cur = g.db.execute("select * from posts")
-    posts = [dict(title=row[0], desc=row[1]) for row in cur.fetchall()]
-    cur.close()
-    g.db.close()
+    posts = BlogPost.query.all()
+    
     return render_template("index.html", username=session.get("username",""), posts=posts)
 
 @app.route("/welcome")
 def welcome():
+    os.system("cls")
     log()
-    return render_template("welcome.html")
+    
+    return render_template("welcome.html", username=session.get("username",""))
 
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -120,10 +116,19 @@ def hello_names(name1, name2):
     
     return "/{}/{} is not accessible !".format(name1, name2)
 
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
 
-def connect_db():
-    return sqlite3.connect(app.config["DATABASE"])
-
+@app.route('/shutdown', methods=["GET","POST"])
+@login_required
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
+    
+    
 if __name__ == '__main__':
-    app.run() # debug=True
-
+    # app.run() 
+    app.run(debug=True) 

@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-
-    <P style="text-align:right; margin:2px;">User : {{ username }}
+    
+    <P style="text-align:right; margin:2px;float:right;">User : {{ username }}
     <a href="/logout">Deconnexion</a></p>
     
+    <div style="height: 100px;"></div>
     <h3>Posts : </h3>
     
     {% for post in posts %}
       <strong>Titre :</strong> {{ post.title }} <br/>
-      <strong>Description :</strong> {{ post.desc }} <br /><BR />
+      <strong>Description :</strong> {{ post.description }} <br /><BR />
     {% endfor %}
 
 {% endblock %}

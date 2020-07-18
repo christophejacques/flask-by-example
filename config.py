@@ -7,14 +7,17 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
+    ENV = "production"
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'blabla-linux'
-    DATABASE = "sample.db"
+    SQLALCHEMY_DATABASE_URI = os.environ["DATABASE_URL"]
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
+    ENV = "production"
     DEBUG = False
 
 
@@ -24,6 +27,7 @@ class StagingConfig(Config):
 
 
 class DevelopmentConfig(Config):
+    ENV = "development"
     DEVELOPMENT = True
     DEBUG = True
 

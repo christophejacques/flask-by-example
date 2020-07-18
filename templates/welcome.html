@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-
-    <P style="text-align:right;"><a href="/login">Se connecter</a></p>
-    Bienvenu sur le serveur : MCJ <BR />
+  {% if not username %}
+    <P style="text-align:right;margin:2px; float:right"><a href="/login">Se connecter</a></p>
+  {% else %}
+    <P style="text-align:right; margin:2px;float:right;">User : {{ username }}
+    <a href="/logout">Deconnexion</a></p>
+  {% endif %}
+  
+  <div style="height: 100px;"></div>
+  Bienvenu sur le serveur : MCJ <BR />
 
 {% endblock %}
