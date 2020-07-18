@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash
+from flask import Flask, render_template, request, url_for, redirect, session, flash, g
 from functools import wraps
 import os, time, datetime
-import inspect
+import inspect, sqlite3
 
+# hashlib.sha256("test".encode("utf-8")).hexdigest()
 os.system("cls")
 app = Flask(__name__)
+
 try:
     app.config.from_object(os.environ['APP_SETTINGS'])
 except:
@@ -13,6 +15,10 @@ except:
     print("Pour mettre à jour l'environnement,")
     print("tapper : source .env")
     exit(1)
+
+for k in app.config:
+    if k in ("ENV", "DEBUG", "TESTING", "SECRET_KEY", "DATABASE", "DEVELOPMENT"):
+        print("-", k, "=", app.config[k])
 
 def log(*args, **kwargs):
     if args:
@@ -49,7 +55,12 @@ def login_required(f):
 @login_required
 def home():
     log()
-    return render_template("index.html", username=session.get("username",""))
+    g.db = connect_db()
+    cur = g.db.execute("select * from posts")
+    posts = [dict(title=row[0], desc=row[1]) for row in cur.fetchall()]
+    cur.close()
+    g.db.close()
+    return render_template("index.html", username=session.get("username",""), posts=posts)
 
 @app.route("/welcome")
 def welcome():
@@ -99,17 +110,20 @@ def logout():
 def hello_name(name):
     log()
     log(f"looking for /{name}")
+    
     return "/{} is not accessible !".format(name)
 
 @app.route("/<name1>/<name2>")
 def hello_names(name1, name2):
     log()
     log(f"looking for /{name1}/{name2}")
+    
     return "/{}/{} is not accessible !".format(name1, name2)
 
 
+def connect_db():
+    return sqlite3.connect(app.config["DATABASE"])
+
 if __name__ == '__main__':
-    print("Run with", os.environ['APP_SETTINGS'])
-    print()
-    app.run(debug=True)
+    app.run() # debug=True
 

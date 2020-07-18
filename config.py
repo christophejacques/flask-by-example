@@ -11,6 +11,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'blabla-linux'
+    DATABASE = "sample.db"
 
 
 class ProductionConfig(Config):

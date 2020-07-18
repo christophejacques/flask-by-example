@@ -3,9 +3,12 @@
 
     <P style="text-align:right; margin:2px;">User : {{ username }}
     <a href="/logout">Deconnexion</a></p>
-    Hello My World !<BR />
-    <BR />
-    Phrase avec des accents<BR />
-    l'écureuil cogne à la fenêtre !<BR />
+    
+    <h3>Posts : </h3>
+    
+    {% for post in posts %}
+      <strong>Titre :</strong> {{ post.title }} <br/>
+      <strong>Description :</strong> {{ post.desc }} <br /><BR />
+    {% endfor %}
 
 {% endblock %}
