@@ -1,6 +1,3 @@
-fichier = __file__.split("\\")[-1]
-print(f"Loading {fichier}", flush=True, end=" : ")
-
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -35,4 +32,3 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
                                                             
-print("ok")
