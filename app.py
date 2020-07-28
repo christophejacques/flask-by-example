@@ -1,5 +1,5 @@
 import os, time, datetime
-import inspect, sqlite3
+import inspect 
 
 from functools import wraps
 from models import app, BlogPost
@@ -19,9 +19,9 @@ except Exception as e:
 
 def log(*args, **kwargs):
     if args:
-        print(now(), *args)
+        print(now(), *args, flush=True)
     else:
-        print(now(), get_function_name())
+        print(now(), get_function_name(),flush=True)
 
 def get_function_name(params=False):
     f_frame = inspect.currentframe()
@@ -52,7 +52,7 @@ def login_required(f):
 @login_required
 def home():
     log()
-    posts = BlogPost.query.all()
+    posts = BlogPost.query.filter(BlogPost.id == 1)
     
     return render_template("index.html", username=session.get("username",""), posts=posts)
 
