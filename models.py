@@ -2,7 +2,15 @@
 print("loading Flask : ", flush=True, end="")
 
 import os
-from flask import Flask
+try:
+    from flask import Flask
+
+except Exception as e:
+    print("Error:", e)
+    print()
+    print("Mettre à jour l'environnement,")
+    print("tapper : source .setup")
+    exit(1)
 
 app = Flask(__name__)
 print("ok")
@@ -17,7 +25,7 @@ except KeyError as ke:
     print(f"ko\nVariable d'environnement {ke} non définie")    
     print()
     print("Pour mettre à jour l'environnement,")
-    print("tapper : source .env")
+    print("tapper : source .setup")
     exit(1)
 
 except Exception as e:

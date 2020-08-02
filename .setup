@@ -1,6 +1,65 @@
 echo -n "Activation de l'environnement virtuel : "
+
+getfiles() {
+
+	OLDPWD=$PWD
+	cd $1 2> /dev/null
+	if [[ $? -eq 0 ]] ; then
+		VILLES=$(for x in *; do (echo -n "$x "); done)
+		cd $OLDPWD
+		echo -n $VILLES
+	fi
+	unset OLDPWD
+	unset VILLES
+
+	# destruction de la fonction
+	unset -f getfiles
+}
+
+
+if [[ $# -ne 1 ]]
+then
+	echo KO
+	echo "Nombre de parametres incorrect"
+	echo
+	echo "Utiliser la commande :"
+	echo -n "source .setup <ville>  ("
+	getfiles env
+	echo ")"
+	return 1
+fi
+
+
+VILLE=$1
+REPERTOIRE=env/$VILLE/Scripts
+
+echo $VILLE
+
+if [[ ! -d $REPERTOIRE ]]
+then
+	echo "Le répertoire : $REPERTOIRE n'existe pas"
+	return 1
+fi
+
+if [[ ! -e $REPERTOIRE/activate ]]
+then
+	echo "Le fichier : $REPERTOIRE/activate n'existe pas"
+	return 1
+fi
+
+unset VILLE
+unset REPERTOIRE
+
+source env/orleans/Scripts/activate
+if [[ $? -eq 0 ]]
+then
+      echo "Paramétrage : ok"
+else
+      echo "Paramétrage : KO"
+      return 1
+fi
+
 export APP_SETTINGS="config.DevelopmentConfig"
 export DATABASE_URL="sqlite:///posts.db"
 
-source env/Scripts/activate
-echo ok
+

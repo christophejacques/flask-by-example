@@ -12,7 +12,7 @@ except Exception as e:
     print()
     print("L'environnement n'est pas à jour\n")
     print("Pour mettre à jour l'environnement,")
-    print("tapper : source .env")
+    print("tapper : source .setup")
     exit(1)
     
 #os.system("cls")
